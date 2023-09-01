@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+
+  trendyol-link-converter-db-service:
+    image: library/postgres:12.3-alpine
+    container_name: trendyol-link-converter-db-service
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+
+  trendyol-link-converter:
+    build: .
+    container_name: trendyol-link-converter
+    restart: always
+    environment:
+      MAINDB_ENDPOINT: trendyol-link-converter-db-service
+      MAINDB_DBNAME: postgres
+      MAINDB_USERNAME: postgres
+      MAINDB_PASSWORD: password
+    ports:
+      - 8080:8080
+    depends_on:
+      - trendyol-link-converter-db-service
+
+ 
